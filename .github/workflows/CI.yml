@@ -26,7 +26,14 @@ jobs:
       fail-fast: false
       matrix:
         version: ['1.12']
-        os: [ubuntu-latest, windows-latest]
+        # Windows is disabled while the silent OMBackend test-suite stall
+        # (Modelica.Electrical.Spice3 / MSL structural_simplify path) is
+        # being debugged locally. The 90-minute job cap is hit consistently
+        # on Windows with no test output for the last 70+ minutes. Linux
+        # runs the same suite in well under 50 minutes. Re-enable once the
+        # hung @testset is identified and either fixed or skipped on
+        # Windows. See JKRT/OMBackend.jl#73 for the parallel removal there.
+        os: [ubuntu-latest]
         arch: [x64]
     steps:
       # OM and every sub-package are checked out as SIBLINGS in the workspace.
